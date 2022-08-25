@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Net.WebSockets;
 
 namespace CoreFeatures;
 
@@ -19,10 +20,10 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        DependencyInjection();
+        //DependencyInjection();
         //Configuration();
         //Logging();
-        //AllTogetherNow();
+        AllTogetherNow();
 
         Console.ReadLine();
     }
@@ -33,45 +34,52 @@ internal class Program
         var builder = factory.CreateBuilder(services);
         builder.AddHostedService<ConsoleHost>();
         builder.AddTransient<ICounter, Counter>();
-        //builder.AddScoped<ICounter, Counter>();
+        // builder.AddScoped<ICounter, Counter>();
         //builder.AddSingleton<ICounter, Counter>();
-        
+        builder.AddTransient<Test>();
         var provider = builder.BuildServiceProvider();
+
+        var test = provider.GetRequiredService<Test>();
+        test.Run();
+
         
         Console.WriteLine("==== Run 1 ====");
-        using (var scope = provider.CreateScope())
-        {
-            for (int i = 0; i < 5; i++)
-            {
-                var _counter = scope.ServiceProvider.GetRequiredService<ICounter>();
-                _counter.Increment();
-                _counter.Show();
-            }
-        }
-        //var host = provider.GetRequiredService<IHostedService>();
-        //host.StartAsync(CancellationToken.None).Wait();
+        //using (var scope = provider.CreateScope())
+        //{
+        //    for (int i = 0; i < 5; i++)
+        //    {
+        //        var _counter = scope.ServiceProvider.GetRequiredService<ICounter>();
+        //        _counter.Increment();
+        //        _counter.Show();
+        //    }
+        //}
+        var host = provider.GetRequiredService<IHostedService>();
+        host.StartAsync(CancellationToken.None).Wait();
         Console.WriteLine("==== Run 2 ====");
-        using (var scope = provider.CreateScope())
-        {
-            for (int i = 0; i < 5; i++)
-            {
-                var _counter = scope.ServiceProvider.GetRequiredService<ICounter>();
-                _counter.Increment();
-                _counter.Show();
-            }
-        }
-        //host = provider.GetRequiredService<IHostedService>();
-        //host.StartAsync(CancellationToken.None).Wait();
+        //using (var scope = provider.CreateScope())
+        //{
+        //    for (int i = 0; i < 5; i++)
+        //    {
+        //        var _counter = scope.ServiceProvider.GetRequiredService<ICounter>();
+        //        _counter.Increment();
+        //        _counter.Show();
+        //    }
+        //}
+        host = provider.GetRequiredService<IHostedService>();
+        host.StartAsync(CancellationToken.None).Wait();
     }
     private static void Configuration()
     {
         var builder = new ConfigurationBuilder();
         builder.SetBasePath(Directory.GetCurrentDirectory());
-        builder.AddJsonFile("appsettings.json");
+        builder.AddJsonFile("appsettings.json", false, true);
         builder.AddIniFile("startup.ini");
         builder.AddXmlFile("config.xml");
         IConfigurationRoot config = builder.Build();
-        var jsonSettings = config.GetSection(nameof(MySettings)).Get<MySettings>();
+
+        var val = config.GetValue<string>("mySettings33:Key1");
+        Console.WriteLine(val);
+        var jsonSettings = config.GetSection("mySettings33").Get<MySettings>();
         Console.WriteLine($"Key 1={jsonSettings.Key1}, Key 2={jsonSettings.Key2}");
         var xmlConfig = config.GetSection("myConfig").Get<MySettings>();
         Console.WriteLine($"Key 1={xmlConfig.Key1}, Key 2={xmlConfig.Key2}");
@@ -89,6 +97,8 @@ internal class Program
             bld.AddConfiguration(config.GetSection("Logging"));
             bld.ClearProviders();
             bld.AddConsole();
+            bld.AddDebug();
+            bld.AddEventLog();
         });
         ILogger<LogVictim> logger = factory.CreateLogger<LogVictim>();
         var obj = new LogVictim(logger);

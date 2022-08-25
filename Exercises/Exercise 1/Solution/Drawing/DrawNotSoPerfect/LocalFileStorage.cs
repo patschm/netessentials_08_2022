@@ -31,8 +31,9 @@ public class LocalFileStorage : IStorage
         _currentFile = path;
         JsonSerializer serializer = new JsonSerializer();
         serializer.TypeNameHandling = TypeNameHandling.All;
-        using (var stream = File.OpenWrite(_currentFile))
-        using (var writer = new StreamWriter(stream))
+        var stream = File.OpenWrite(_currentFile);
+        var writer = new StreamWriter(stream);
             serializer.Serialize(writer, shapes);
+        writer.Close();
     }
 }
