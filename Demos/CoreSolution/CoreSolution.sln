@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpClientApp", "HttpClientApp\HttpClientApp.csproj", "{9176C426-FFE7-4060-BB62-C40ACC077E3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CertificatesCrypto", "CertificatesCrypto\CertificatesCrypto.csproj", "{9E6FA2A5-4B9C-46D2-AB2C-BC35CC5B1466}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CertificatesCrypto", "CertificatesCrypto\CertificatesCrypto.csproj", "{9E6FA2A5-4B9C-46D2-AB2C-BC35CC5B1466}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSystem", "FileSystem\FileSystem.csproj", "{62F64DF0-D398-4BD6-B44D-BC91E6331DA7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{9E6FA2A5-4B9C-46D2-AB2C-BC35CC5B1466}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E6FA2A5-4B9C-46D2-AB2C-BC35CC5B1466}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E6FA2A5-4B9C-46D2-AB2C-BC35CC5B1466}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62F64DF0-D398-4BD6-B44D-BC91E6331DA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62F64DF0-D398-4BD6-B44D-BC91E6331DA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62F64DF0-D398-4BD6-B44D-BC91E6331DA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62F64DF0-D398-4BD6-B44D-BC91E6331DA7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
