@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.IO.Compression;
+using System.Reflection;
 using System.Text;
 
 namespace FileSystem;
@@ -14,10 +15,39 @@ internal class Program
         //PreHistoricReadToStream();
 
         //ModernWriteToStream();
-        ModernReadFromStream();
+        //ModernReadFromStream();
+
+        //ModernWriteToZipStream();
+        ModernReadFromZipStream();
         //Console.ReadLine();
     }
 
+    private static void ModernReadFromZipStream()
+    {
+        FileStream fs = File.OpenRead(@"D:\WatchThis\data.zip");
+        GZipStream zipper = new GZipStream(fs, CompressionMode.Decompress);
+        StreamReader sr = new StreamReader(zipper);
+        
+        string? line;
+        while ((line = sr.ReadLine()) != null)
+        {
+            Console.WriteLine(line);
+        }
+        sr.Close();
+    }
+
+    private static void ModernWriteToZipStream()
+    {
+        FileStream fs = File.Create(@"D:\WatchThis\data.zip");
+        GZipStream zipper = new GZipStream(fs, CompressionMode.Compress);
+        StreamWriter writer = new StreamWriter(zipper);
+        for (int i = 0; i < 1000; i++)
+        {
+            writer.WriteLine($"Hello World {i}");
+        }
+        //writer.Flush();
+        writer.Close();
+    }
     private static void ModernReadFromStream()
     {
         FileStream fs = File.OpenRead(@"D:\WatchThis\adv.txt");
