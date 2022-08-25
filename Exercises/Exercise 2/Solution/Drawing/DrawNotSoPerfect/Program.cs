@@ -25,21 +25,23 @@ internal static class Program
         var host = CreateHostBuilder().Build();
         Application.Run(host.Services.GetRequiredService<DrawMain>());
     }
-    
+
     private static IHostBuilder CreateHostBuilder()
     {
-        return Host.CreateDefaultBuilder()
-            //.ConfigureAppConfiguration((ctx, cf) => {
-            //    cf.AddJsonFile($"appsettings.{ctx.HostingEnvironment.EnvironmentName}.json");
-            //})
-            .ConfigureLogging(bld =>
-            {
-                bld.ClearProviders();
-                bld.AddDebug();
-            })
-            .ConfigureServices((ctx, services) => {
-                services.AddTransient<DrawMain>();
-                services.AddSingleton<IStorage, LocalFileStorage>();
-            });
+        var hostje = Host.CreateDefaultBuilder();
+        //hostje.ConfigureAppConfiguration((ctx, cf) => {
+        //    cf.AddJsonFile($"appsettings.{ctx.HostingEnvironment.EnvironmentName}.json");
+        //});
+        hostje.ConfigureLogging(bld =>
+        {
+            bld.ClearProviders();
+            bld.AddDebug();
+        });
+        hostje.ConfigureServices((ctx, services) =>
+        {
+            services.AddTransient<DrawMain, DrawMain>();
+            services.AddSingleton<IStorage, LocalFileStorage>();
+        });
+        return hostje;
     }
 }

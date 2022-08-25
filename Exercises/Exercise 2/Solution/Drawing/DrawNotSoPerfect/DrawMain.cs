@@ -13,7 +13,7 @@ public partial class DrawMain : Form
     private DragInfo? _selected = null;
     // TODO 4: Get an instance from IStorage from the Dependency Injector
     // and test the application.
-    private IStorage _storage;
+    private IStorage _storage;// = new LocalFileStorage();
 
     public DrawMain(IStorage storage)
     {
