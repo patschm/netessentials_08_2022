@@ -16,41 +16,42 @@ public class Program
 {
     static void Main(string[] args)
     {
-        BasicClient();
+        //BasicClient();
         //DIClient();
         //StrongClient();
         //PostClient();
-        //AuthClient();
+        AuthClient();
     }
 
     private static void BasicClient()
     {
         HttpClient client = new HttpClient();
         client.BaseAddress = new Uri("https://localhost:8001/");
-
+        
         var response = client.GetAsync("WeatherForecast").Result;
         if (response.IsSuccessStatusCode)
         {
             var strData = response.Content.ReadAsStringAsync().Result;
             Console.WriteLine(strData);
         }
+        //client.Dispose();
     }
     private static void DIClient()
     {
         var factory = new DefaultServiceProviderFactory();
         var services = new ServiceCollection();
         var builder = factory.CreateBuilder(services);
+
         builder.AddHttpClient("weather", opts =>
         {
             opts.BaseAddress = new Uri("https://localhost:8001/");
-        })
-            .SetHandlerLifetime(TimeSpan.FromMinutes(5)) // Default is 10 minutes
+        }).SetHandlerLifetime(TimeSpan.FromMinutes(5)) // Default is 10 minutes
             .AddPolicyHandler(msg =>
             { // From Microsoft.Extensions.Http.Polly
                 return HttpPolicyExtensions
                     .HandleTransientHttpError()
                     .OrResult(m => m.StatusCode == HttpStatusCode.NotFound)
-                    .WaitAndRetryAsync(3, retAttempt => TimeSpan.FromSeconds(5));
+                    .WaitAndRetryAsync(3, retAttempt => TimeSpan.FromSeconds(15));
             });
 
         var provider = builder.BuildServiceProvider();
@@ -107,6 +108,15 @@ public class Program
     }
     private static void AuthClient()
     {
+        //var hand = new HttpClientHandler
+        //{
+        //    Credentials = new NetworkCredential("user", "pass", "domain"),
+        //    UseCookies = true
+        //};
+
+        //HttpClient clt = new HttpClient(hand);
+
+
         var factory = new DefaultServiceProviderFactory();
         var services = new ServiceCollection();
         var builder = factory.CreateBuilder(services);
