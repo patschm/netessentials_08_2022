@@ -10,8 +10,68 @@ internal class Program
         #region Integrity
         //TestHash();
         //TestSymmetric();
-        TestAsymmetric();
+        //TestAsymmetric();
         #endregion
+        #region Confidentiality
+        //TestAsymmetricConfid();
+        TestSymmetricConfid();
+        #endregion
+    }
+
+    private static void TestSymmetricConfid()
+    {
+        string mgs = "Hello World";
+        // Sender
+        SymmetricAlgorithm alg = Rijndael.Create();
+        //alg.Mode = CipherMode.ECB;
+        byte[] key = alg.Key;
+        byte[] iv = alg.IV;
+
+        byte[] cipher;
+        using (MemoryStream ms = new MemoryStream())
+        {
+            using (CryptoStream crypt = new CryptoStream(ms, alg.CreateEncryptor(), CryptoStreamMode.Write))
+            using (StreamWriter writer = new StreamWriter(crypt))
+                writer.WriteLine(mgs);
+            cipher = ms.ToArray();
+            
+        }
+        Console.WriteLine(Convert.ToBase64String(cipher));
+
+        // Receiver
+        SymmetricAlgorithm alg2 = Rijndael.Create();
+        //alg2.Mode = CipherMode.ECB; 
+        alg2.Key = key; 
+       alg2.IV = iv;
+        using (MemoryStream ms = new MemoryStream(cipher))
+        using (CryptoStream crypt = new CryptoStream(ms, alg2.CreateDecryptor(), CryptoStreamMode.Read))
+        using (StreamReader reader = new StreamReader(crypt))
+        {
+            string txt = reader.ReadToEnd();
+            Console.WriteLine(txt);
+        }   
+            
+
+    }
+
+    private static void TestAsymmetricConfid()
+    {
+       // Receipient generates public and private key and
+       // sends the public key to the sender.
+        RSA rsaReceipient = new RSACryptoServiceProvider();
+        string publicKey = rsaReceipient.ToXmlString(false);
+        Console.WriteLine(publicKey);
+
+        // Sender
+        string mgs = "Hello World";
+        RSA rsaSender= new RSACryptoServiceProvider();
+        rsaSender.FromXmlString(publicKey);
+        byte[] cipher = rsaSender.Encrypt(Encoding.UTF8.GetBytes(mgs), RSAEncryptionPadding.Pkcs1);
+        Console.WriteLine(Convert.ToBase64String(cipher));
+    
+        // Receiver
+        byte[] result = rsaReceipient.Decrypt(cipher, RSAEncryptionPadding.Pkcs1);
+        Console.WriteLine(Encoding.UTF8.GetString(result));
     }
 
     private static void TestAsymmetric()

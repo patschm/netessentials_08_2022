@@ -1,1 +1,43 @@
-{"$type":"System.Collections.Generic.List`1[[Shapes.Shape, Shapes]], System.Private.CoreLib","$values":[{"$type":"Shapes.Circle, Shapes","Radius":100,"Location":{"$type":"Shapes.Position, Shapes","X":621,"Y":372},"Color":"255, 0, 128","LineWidth":5,"IsSelected":false},{"$type":"Shapes.Rectangle, Shapes","Width":100,"Height":200,"Location":{"$type":"Shapes.Position, Shapes","X":306,"Y":362},"Color":"Black","LineWidth":5,"IsSelected":false},{"$type":"Shapes.Triangle, Shapes","Base":200,"Heigth":100,"Angle":30,"Location":{"$type":"Shapes.Position, Shapes","X":286,"Y":165},"Color":"64, 0, 0","LineWidth":5,"IsSelected":false}]}
+{
+    "$type":"System.Collections.Generic.List`1[[Shapes.Shape, Shapes]], System.Private.CoreLib","$values":[
+        {
+            "$type":"Shapes.Circle, Shapes",
+            "Radius": 100,
+            "Location": {
+                "$type": "Shapes.Position, Shapes",
+                "X": 621,
+                "Y": 372
+            },
+            "Color": "255, 0, 128",
+            "LineWidth": 5,
+            "IsSelected": false
+        },
+        {
+            "$type": "Shapes.Rectangle, Shapes",
+            "Width": 100,
+            "Height": 200,
+            "Location": {
+                "$type": "Shapes.Position, Shapes",
+                "X": 306,
+                "Y": 362
+            },
+            "Color": "Black",
+            "LineWidth": 5,
+            "IsSelected": false
+        },
+        {
+            "$type": "Shapes.Triangle, Shapes",
+            "Base": 200,
+            "Heigth": 100,
+            "Angle": 30,
+            "Location": {
+                "$type": "Shapes.Position, Shapes",
+                "X": 286,
+                "Y": 165
+            },
+            "Color": "64, 0, 0",
+            "LineWidth": 5,
+            "IsSelected": false
+        }
+    ]
+}
